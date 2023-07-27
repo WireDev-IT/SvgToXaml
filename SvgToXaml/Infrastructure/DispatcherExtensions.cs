@@ -24,19 +24,14 @@ namespace SvgToXaml.Infrastructure
 
         public static Task InUiAsync(Action action)
         {
-            if (Application.Current == null)
-            {
-                return RunSynchronously(action);
-            }
-
-            return Application.Current.Dispatcher.DoAsync(action);
+            return Application.Current == null ? RunSynchronously(action) : Application.Current.Dispatcher.DoAsync(action);
         }
 
         private static void Do(this Dispatcher dispatcher, Action action)
         {
             if (!dispatcher.CheckAccess())
             {
-                dispatcher.BeginInvoke(action, DispatcherPriority.Background);
+                _ = dispatcher.BeginInvoke(action, DispatcherPriority.Background);
                 return;
             }
 
@@ -45,18 +40,13 @@ namespace SvgToXaml.Infrastructure
 
         private static Task DoAsync(this Dispatcher dispatcher, Action action)
         {
-            if (!dispatcher.CheckAccess())
-            {
-                return RunAsync(dispatcher, action);
-            }
-
-            return RunSynchronously(action);
+            return !dispatcher.CheckAccess() ? RunAsync(dispatcher, action) : RunSynchronously(action);
         }
 
         private static Task RunAsync(Dispatcher dispatcher, Action action)
         {
-            var completionSource = new TaskCompletionSource<object>();
-            var dispatcherOperation = dispatcher.BeginInvoke(new Action(() =>
+            TaskCompletionSource<object> completionSource = new TaskCompletionSource<object>();
+            DispatcherOperation dispatcherOperation = dispatcher.BeginInvoke(new Action(() =>
             {
                 try
                 {
@@ -74,7 +64,7 @@ namespace SvgToXaml.Infrastructure
 
         private static Task RunSynchronously(Action action)
         {
-            var completionSource = new TaskCompletionSource<object>();
+            TaskCompletionSource<object> completionSource = new TaskCompletionSource<object>();
             try
             {
                 action();

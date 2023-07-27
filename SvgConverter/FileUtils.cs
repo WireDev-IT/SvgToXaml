@@ -24,18 +24,30 @@ namespace SvgConverter
         /// <exception cref="InvalidOperationException"></exception>
         public static string MakeRelativePath(string fromPath, PathIs fromIs, string toPath, PathIs toIs)
         {
-            if (string.IsNullOrEmpty(fromPath)) throw new ArgumentNullException(nameof(fromPath));
-            if (string.IsNullOrEmpty(toPath)) throw new ArgumentNullException(nameof(toPath));
+            if (string.IsNullOrEmpty(fromPath))
+            {
+                throw new ArgumentNullException(nameof(fromPath));
+            }
+
+            if (string.IsNullOrEmpty(toPath))
+            {
+                throw new ArgumentNullException(nameof(toPath));
+            }
 
             //Slash am Ende anfügen, damit Uri damit klarkommt und weiß, was ein Folder ist, und was nicht
             if (!fromPath.EndsWith(Path.DirectorySeparatorChar.ToString()) &&
                 !fromPath.EndsWith(Path.AltDirectorySeparatorChar.ToString()) &&
                 fromIs == PathIs.Folder)
+            {
                 fromPath += Path.DirectorySeparatorChar;
+            }
+
             if (!toPath.EndsWith(Path.DirectorySeparatorChar.ToString()) &&
                 !toPath.EndsWith(Path.AltDirectorySeparatorChar.ToString()) &&
                 toIs == PathIs.Folder)
+            {
                 toPath += Path.DirectorySeparatorChar;
+            }
 
             Uri fromUri = new Uri(fromPath);
             Uri toUri = new Uri(toPath);
@@ -50,7 +62,9 @@ namespace SvgConverter
                 relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
             }
             if (relativePath == string.Empty)
+            {
                 relativePath = ".\\";
+            }
             //ein \ am Ende entfernen, dies macht Probleme, insbesondere in CommandLine wenn quoted
             //zudem scheint der .Net - Standard zu sein, kein \ am Ende zu haben vgl. Path.GetDirectoryname()
             return relativePath.TrimEnd(Path.DirectorySeparatorChar);

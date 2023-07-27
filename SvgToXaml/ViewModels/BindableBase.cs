@@ -33,7 +33,10 @@ namespace SvgToXaml.ViewModels
         protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
             if (Equals(storage, value))
+            {
                 return false;
+            }
+
             storage = value;
             OnPropertyChanged(propertyName);
             return true;
@@ -78,16 +81,21 @@ namespace SvgToXaml.ViewModels
         public static string ExtractPropertyName<T>(Expression<Func<T>> propertyExpression)
         {
             if (propertyExpression == null)
+            {
                 throw new ArgumentNullException(nameof(propertyExpression));
-            MemberExpression memberExpression = propertyExpression.Body as MemberExpression;
-            if (memberExpression == null)
+            }
+
+            if (!(propertyExpression.Body is MemberExpression memberExpression))
+            {
                 throw new ArgumentException("PropertySupport NotMemberAccessExpression", nameof(propertyExpression));
+            }
+
             PropertyInfo propertyInfo = memberExpression.Member as PropertyInfo;
-            if (propertyInfo == null)
-                throw new ArgumentException("PropertySupport ExpressionNotProperty", nameof(propertyExpression));
-            if (propertyInfo.GetMethod.IsStatic)
-                throw new ArgumentException("PropertySupport StaticExpression", nameof(propertyExpression));
-            return memberExpression.Member.Name;
+            return propertyInfo == null
+                ? throw new ArgumentException("PropertySupport ExpressionNotProperty", nameof(propertyExpression))
+                : propertyInfo.GetMethod.IsStatic
+                ? throw new ArgumentException("PropertySupport StaticExpression", nameof(propertyExpression))
+                : memberExpression.Member.Name;
         }
 
     }

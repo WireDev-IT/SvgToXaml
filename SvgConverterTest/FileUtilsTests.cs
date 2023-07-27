@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 using SvgConverter;
 
@@ -22,7 +18,7 @@ namespace SvgConverterTest
         [TestCase(@"C:\Temp", PathIs.Folder, @"C:\Temp", PathIs.Folder, @".")]
         public void MakeRelativePath(string fromPath, PathIs fromIs, string toPath, PathIs toIs, string result)
         {
-            FileUtils.MakeRelativePath(fromPath, fromIs, toPath, toIs).Should().Be(result);
+            _ = FileUtils.MakeRelativePath(fromPath, fromIs, toPath, toIs).Should().Be(result);
         }
     }
 }

@@ -31,7 +31,9 @@ namespace SvgToXaml.Command
             : base(o => executeMethod(), o => canExecuteMethod())
         {
             if (executeMethod == null || canExecuteMethod == null)
+            {
                 throw new ArgumentNullException(nameof(executeMethod), "DelegateCommand Delegates CannotBeNull");
+            }
         }
 
         private DelegateCommand(Func<Task> executeMethod)
@@ -43,7 +45,9 @@ namespace SvgToXaml.Command
             : base(o => executeMethod(), o => canExecuteMethod())
         {
             if (executeMethod == null || canExecuteMethod == null)
+            {
                 throw new ArgumentNullException(nameof(executeMethod), "DelegateCommand Delegates CannotBeNull");
+            }
         }
 
         /// <summary>
@@ -151,10 +155,15 @@ namespace SvgToXaml.Command
             : base(o => executeMethod((T)o), o => canExecuteMethod((T)o))
         {
             if (executeMethod == null || canExecuteMethod == null)
+            {
                 throw new ArgumentNullException(nameof(executeMethod), "DelegateCommand Delegates CannotBeNull");
+            }
+
             TypeInfo typeInfo = typeof(T).GetTypeInfo();
             if (typeInfo.IsValueType && (!typeInfo.IsGenericType || !typeof(Nullable<>).GetTypeInfo().IsAssignableFrom(typeInfo.GetGenericTypeDefinition().GetTypeInfo())))
+            {
                 throw new InvalidCastException("DelegateCommand Invalid Generic Payload Type");
+            }
         }
 
         private DelegateCommand(Func<T, Task> executeMethod)
@@ -166,7 +175,9 @@ namespace SvgToXaml.Command
             : base(o => executeMethod((T)o), o => canExecuteMethod((T)o))
         {
             if (executeMethod == null || canExecuteMethod == null)
+            {
                 throw new ArgumentNullException(nameof(executeMethod), "DelegateCommand Delegates CannotBeNull");
+            }
         }
 
         /// <summary>

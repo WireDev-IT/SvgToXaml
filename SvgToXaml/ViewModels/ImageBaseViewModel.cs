@@ -1,8 +1,8 @@
+using SvgToXaml.Command;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Input;
 using System.Windows.Media;
-using SvgToXaml.Command;
 
 namespace SvgToXaml.ViewModels
 {
@@ -37,7 +37,7 @@ namespace SvgToXaml.ViewModels
 
         private void OpenFileExecute()
         {
-            Process.Start(Filepath);
+            _ = Process.Start(Filepath);
         }
 
         protected abstract string GetSvgDesignInfo();

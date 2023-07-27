@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SvgConverter;
+using System;
 using System.Windows;
 using System.Windows.Media;
-using SvgConverter;
 
 namespace SvgToXaml.ViewModels
 {
@@ -24,8 +24,8 @@ namespace SvgToXaml.ViewModels
         {
             get
             {
-                var imageSource = new DrawingImage(new GeometryDrawing(Brushes.Black, null, new RectangleGeometry(new Rect(new Size(10, 10)), 1, 1)));
-                var data = new ConvertedSvgData { ConvertedObj = imageSource, Filepath = "FilePath", Svg = "<svg/>", Xaml = "<xaml/>" };
+                DrawingImage imageSource = new DrawingImage(new GeometryDrawing(Brushes.Black, null, new RectangleGeometry(new Rect(new Size(10, 10)), 1, 1)));
+                ConvertedSvgData data = new ConvertedSvgData { ConvertedObj = imageSource, Filepath = "FilePath", Svg = "<svg/>", Xaml = "<xaml/>" };
                 return new SvgImageViewModel(data);
             }
         }
@@ -37,13 +37,11 @@ namespace SvgToXaml.ViewModels
 
         protected override string GetSvgDesignInfo()
         {
-            if (PreviewSource is DrawingImage)
+            if (PreviewSource is DrawingImage di)
             {
-                var di = (DrawingImage) PreviewSource;
-                if (di.Drawing is DrawingGroup)
+                if (di.Drawing is DrawingGroup dg)
                 {
-                    var dg = (DrawingGroup) di.Drawing;
-                    var bounds = dg.ClipGeometry?.Bounds ?? dg.Bounds;
+                    Rect bounds = dg.ClipGeometry?.Bounds ?? dg.Bounds;
                     return $"{bounds.Width:#.##}x{bounds.Height:#.##}";
                 }
             }
@@ -72,7 +70,7 @@ namespace SvgToXaml.ViewModels
                     {
                         return null;
                     }
-                    
+
                     //verzögertes Laden: ist scheiß lahm
                     //InUi(DispatcherPriority.Loaded, () =>
                     //{

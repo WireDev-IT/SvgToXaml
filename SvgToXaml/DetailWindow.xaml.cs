@@ -23,8 +23,8 @@ namespace SvgToXaml
 
         private void ToggleStretchClicked(object sender, MouseButtonEventArgs e)
         {
-            var values = Enum.GetValues(typeof(Stretch)).OfType<Stretch>().ToList();
-            var idx = values.IndexOf(Image.Stretch);
+            System.Collections.Generic.List<Stretch> values = Enum.GetValues(typeof(Stretch)).OfType<Stretch>().ToList();
+            int idx = values.IndexOf(Image.Stretch);
             idx = (idx + 1) % values.Count;
             Image.Stretch = values[idx];
         }

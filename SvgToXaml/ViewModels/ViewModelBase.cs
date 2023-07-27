@@ -17,7 +17,7 @@ namespace SvgToXaml.ViewModels
         /// <param name="action">Auszuführende Aktion</param>
         public void InUi(Action action)
         {
-            Application.Current.Dispatcher.BeginInvoke(action, DispatcherPriority.Background);
+            _ = Application.Current.Dispatcher.BeginInvoke(action, DispatcherPriority.Background);
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace SvgToXaml.ViewModels
         /// <param name="action">Auszuführende Aktion</param>
         public void InUi(DispatcherPriority priority, Action action)
         {
-            Application.Current.Dispatcher.BeginInvoke(action, priority);
+            _ = Application.Current.Dispatcher.BeginInvoke(action, priority);
         }
 
         /// <summary>
@@ -40,7 +40,10 @@ namespace SvgToXaml.ViewModels
         /// <returns>Liefert <see cref="bool.True"/>, wenn der Wert des Feldes geändert wurde.</returns>
         protected bool SetProperty<T>(ref T field, T value, Expression<Func<T>> propertyExpression)
         {
-            if (Equals(field, value)) return false;
+            if (Equals(field, value))
+            {
+                return false;
+            }
 
             field = value;
             OnPropertyChanged(propertyExpression);

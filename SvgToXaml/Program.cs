@@ -1,17 +1,17 @@
-﻿using System;
+﻿using SvgConverter;
+using SvgToXaml.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using SvgConverter;
-using SvgToXaml.Infrastructure;
 
 namespace SvgToXaml
 {
-    static class Program
+    internal static class Program
     {
         [STAThread]
-        static int Main(string[] args)
+        private static int Main(string[] args)
         {
             AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
 
@@ -22,9 +22,9 @@ namespace SvgToXaml
             }
             else
             {   //normale WPF-Applikationslogik
-                var app = new App();
+                App app = new App();
                 app.InitializeComponent();
-                app.Run();
+                _ = app.Run();
             }
             return exitCode;
         }
@@ -33,7 +33,7 @@ namespace SvgToXaml
         {
             HConsoleHelper.InitConsoleHandles();
 
-            CmdLineHandler.HandleCommandLine(args);
+            _ = CmdLineHandler.HandleCommandLine(args);
 
             HConsoleHelper.ReleaseConsoleHandles();
         }
@@ -41,9 +41,10 @@ namespace SvgToXaml
         private static readonly Dictionary<string, Assembly> LoadedAsmsCache = new Dictionary<string, Assembly>(StringComparer.InvariantCultureIgnoreCase);
         private static Assembly OnResolveAssembly(object sender, ResolveEventArgs args)
         {
-            Assembly cachedAsm;
-            if (LoadedAsmsCache.TryGetValue(args.Name, out cachedAsm))
+            if (LoadedAsmsCache.TryGetValue(args.Name, out Assembly cachedAsm))
+            {
                 return cachedAsm;
+            }
 
             Assembly executingAssembly = Assembly.GetExecutingAssembly();
             AssemblyName assemblyName = new AssemblyName(args.Name);
@@ -57,11 +58,13 @@ namespace SvgToXaml
             using (Stream stream = executingAssembly.GetManifestResourceStream(path))
             {
                 if (stream == null)
+                {
                     return null;
+                }
 
                 byte[] assemblyRawBytes = new byte[stream.Length];
-                stream.Read(assemblyRawBytes, 0, assemblyRawBytes.Length);
-                var loadedAsm = Assembly.Load(assemblyRawBytes);
+                _ = stream.Read(assemblyRawBytes, 0, assemblyRawBytes.Length);
+                Assembly loadedAsm = Assembly.Load(assemblyRawBytes);
                 LoadedAsmsCache.Add(args.Name, loadedAsm);
                 return loadedAsm;
             }

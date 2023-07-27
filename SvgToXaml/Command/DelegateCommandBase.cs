@@ -25,11 +25,14 @@ namespace SvgToXaml.Command
         /// </value>
         public bool IsActive
         {
-            get { return _isActive; }
+            get => _isActive;
             set
             {
                 if (_isActive == value)
+                {
                     return;
+                }
+
                 _isActive = value;
                 OnIsActiveChanged();
             }
@@ -64,8 +67,8 @@ namespace SvgToXaml.Command
         /// </example>
         public virtual event EventHandler CanExecuteChanged
         {
-            add { WeakEventHandlerManager.AddWeakReferenceHandler(ref _canExecuteChangedHandlers, value, 2); }
-            remove { WeakEventHandlerManager.RemoveWeakReferenceHandler(_canExecuteChangedHandlers, value); }
+            add => WeakEventHandlerManager.AddWeakReferenceHandler(ref _canExecuteChangedHandlers, value, 2);
+            remove => WeakEventHandlerManager.RemoveWeakReferenceHandler(_canExecuteChangedHandlers, value);
         }
 
         /// <summary>
@@ -82,7 +85,10 @@ namespace SvgToXaml.Command
         protected DelegateCommandBase(Action<object> executeMethod, Func<object, bool> canExecuteMethod)
         {
             if (executeMethod == null || canExecuteMethod == null)
+            {
                 throw new ArgumentNullException(nameof(executeMethod), "DelegateCommand Delegates CannotBeNull");
+            }
+
             ExecuteMethod = arg =>
             {
                 executeMethod(arg);
@@ -99,7 +105,10 @@ namespace SvgToXaml.Command
         protected DelegateCommandBase(Func<object, Task> executeMethod, Func<object, bool> canExecuteMethod)
         {
             if (executeMethod == null || canExecuteMethod == null)
+            {
                 throw new ArgumentNullException(nameof(executeMethod), "DelegateCommand Delegates CannotBeNull");
+            }
+
             ExecuteMethod = executeMethod;
             CanExecuteMethod = canExecuteMethod;
         }
@@ -158,9 +167,7 @@ namespace SvgToXaml.Command
         /// </returns>
         protected bool CanExecute(object parameter)
         {
-            if (CanExecuteMethod != null)
-                return CanExecuteMethod(parameter);
-            return true;
+            return CanExecuteMethod == null || CanExecuteMethod(parameter);
         }
 
         /// <summary>

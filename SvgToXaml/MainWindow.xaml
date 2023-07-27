@@ -7,11 +7,11 @@
         xmlns:viewModels="clr-namespace:SvgToXaml.ViewModels"
         xmlns:wrapPanel="clr-namespace:SvgToXaml.WrapPanel"
         mc:Ignorable="d" 
-        Title="SvgToXaml   © 2015 Bernd Klaiber" Height="350" Width="525"
+        Title="SvgToXaml   © 2015 Bernd Klaiber" Height="518" Width="842"
         AllowDrop="True"
         Drop="MainWindow_OnDrop"
         Icon="icon.ico"
-        d:DataContext="{x:Static viewModels:SvgImagesViewModel.DesignInstance}">
+        d:DataContext="{x:Static viewModels:SvgImagesViewModel.DesignInstance}" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <DrawingImage x:Key="SaveDrawingImage">
             <DrawingImage.Drawing>
@@ -23,7 +23,7 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="169*"/>
+            <ColumnDefinition Width="100*" MinWidth="70"/>
             <ColumnDefinition Width="3"></ColumnDefinition>
             <ColumnDefinition Width="348*"/>
         </Grid.ColumnDefinitions>
@@ -38,6 +38,7 @@
             <Button DockPanel.Dock="Right" Width="20" Margin="1,3" Command="{Binding ExportDirCommand}" TabIndex="2" ToolTip="Export all Svgs to a Xaml">
                 <Image Source="{StaticResource SaveDrawingImage}" />
             </Button>
+            <Button DockPanel.Dock="Right" Margin="1,3" Command="{Binding RefreshDirCommand}" CommandParameter="{Binding CurrentDir}" TabIndex="2" ToolTip="Open Folder">Refresh</Button>
             <Button DockPanel.Dock="Right" Width="20" Margin="1,3" Command="{Binding OpenFolderCommand}" TabIndex="2" ToolTip="Open Folder">...</Button>
             <TextBox Margin="3" Text="{Binding CurrentDir, Mode=TwoWay}" TabIndex="1"/>
         </DockPanel>

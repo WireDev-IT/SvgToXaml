@@ -118,7 +118,7 @@ namespace SvgToXaml.Infrastructure
         public static extern IntPtr GetStdHandle(StandardHandle nStdHandle);
 
         // ReSharper disable once InconsistentNaming
-        private const UInt32 ATTACH_PARENT_PROCESS = 0xFFFFFFFF;
+        private const uint ATTACH_PARENT_PROCESS = 0xFFFFFFFF;
 
         //true if attached - used to free it later
         public static bool ConsoleIsAttached { get; private set; }
@@ -127,10 +127,12 @@ namespace SvgToXaml.Infrastructure
         {
             // Attach to console window – this may modify the standard handles
             if (AttachConsole(ATTACH_PARENT_PROCESS))
+            {
                 ConsoleIsAttached = true;
+            }
             else
             {
-                AllocConsole();
+                _ = AllocConsole();
             }
         }
 
@@ -151,7 +153,7 @@ namespace SvgToXaml.Infrastructure
             }
             else
             {
-                FreeConsole(); //Pendant zu AllocConsole
+                _ = FreeConsole(); //Pendant zu AllocConsole
             }
         }
 
@@ -172,7 +174,7 @@ namespace SvgToXaml.Infrastructure
             data[0].wRepeatCount = 1;
             data[0].wVirtualKeyCode = 0;
             data[0].wVirtualScanCode = 0;
-            WriteConsoleInput(stdIn, data, 1, ref eventsWritten);
+            _ = WriteConsoleInput(stdIn, data, 1, ref eventsWritten);
             //Console.WriteLine("{0} events written to {1} Written:{2}", eventsWritten, stdIn.ToInt32(), written);
         }
     }

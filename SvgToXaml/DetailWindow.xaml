@@ -6,7 +6,7 @@
         xmlns:viewModels="clr-namespace:SvgToXaml.ViewModels"
         xmlns:textViewer="clr-namespace:SvgToXaml.TextViewer"
         mc:Ignorable="d" 
-        Title="{Binding Filename}" Height="375" Width="300"
+        Title="{Binding Filename}" Height="675" Width="600"
         d:DataContext="{x:Static viewModels:SvgImageViewModel.DesignInstance}">
     <Grid>
         <TabControl TabStripPlacement="Bottom">
